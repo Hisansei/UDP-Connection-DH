@@ -16,10 +16,10 @@ public class PeerD {
             int destPort = 0;
             
             destPort = 5001;
-            destIp = "127.0.0.1";
+            destIp = "192.168.1.11";
 
             System.out.print("Write a message: ");
-            String message = "[A]: " + scanner.nextLine();
+            String message = "[D]: " + scanner.nextLine();
             udpConnection.sendMessage(message, destIp, destPort);
         }
     }
