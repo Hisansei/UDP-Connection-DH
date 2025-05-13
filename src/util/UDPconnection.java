@@ -9,7 +9,8 @@ public class UDPconnection extends Thread {
     private boolean running = false;
     private int port;
 
-    private UDPconnection() {}
+    private UDPconnection() {
+    }
 
     public static UDPconnection getInstance() {
         if (instance == null) {
@@ -23,28 +24,33 @@ public class UDPconnection extends Thread {
         try {
             this.socket = new DatagramSocket(this.port);
         } catch (SocketException e) {
-            System.err.println("Failed to create socket on specified port: " + e.getMessage());
+            System.err.println("Failed to create socket on port " + port + ": " + e.getMessage());
         }
     }
 
-    public void close(){
+    public void close() {
+        running = false;
         if (socket != null) {
             socket.close();
         }
-        running = false;
     }
 
     @Override
-    public void run(){
+    public void run() {
         running = true;
         byte[] buffer = new byte[1024];
+
         while (running) {
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             try {
-                System.out.println("Waiting for a message on port " + port + "...");
+                System.out.println("Waiting for message on port " + port + "...");
                 socket.receive(packet);
-                String msj = new String(packet.getData(), 0, packet.getLength()).trim();
-                System.out.println("\nMessage from " + packet.getAddress() + ":" + packet.getPort() + ": " + msj);
+                InetAddress address = packet.getAddress();
+                int port = packet.getPort();
+                String received = new String(packet.getData(), 0, packet.getLength()).trim();
+
+                System.out.println("Received from " + address + ":" + port + ": " + received);
+
             } catch (IOException e) {
                 if (running) {
                     e.printStackTrace();
@@ -56,18 +62,16 @@ public class UDPconnection extends Thread {
         }
     }
 
-    public void sendMessage(String msj, String ipDest, int portDest){
-        new Thread(
-            () -> {
-                try {
-                    InetAddress ipAddress = InetAddress.getByName(ipDest);
-                    DatagramPacket packet = new DatagramPacket(
+    public void sendMessage(String msj, String ipDest, int portDest) {
+        new Thread(() -> {
+            try {
+                InetAddress ipAddress = InetAddress.getByName(ipDest);
+                DatagramPacket packet = new DatagramPacket(
                         msj.getBytes(), msj.length(), ipAddress, portDest);
-                    socket.send(packet);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                socket.send(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        ).start();
+        }).start();
     }
 }
