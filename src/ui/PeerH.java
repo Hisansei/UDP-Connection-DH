@@ -16,7 +16,7 @@ public class PeerH {
             int destPort = 0;
             
             destPort = 5000;
-            destIp = "192.168.1.2";
+            destIp = "192.168.1.16";
 
             System.out.print("Write a message: ");
             String message = "[H]: " + scanner.nextLine();
