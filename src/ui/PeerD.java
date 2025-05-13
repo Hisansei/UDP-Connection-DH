@@ -1,3 +1,4 @@
+// PeerD.java
 package ui;
 
 import util.UDPconnection;
@@ -12,15 +13,9 @@ public class PeerD {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            String destIp = "127.0.0.1";
-            int destPort = 0;
-            
-            destPort = 5001;
-            destIp = "192.168.1.11";
-
             System.out.print("Write a message: ");
             String message = "[D]: " + scanner.nextLine();
-            udpConnection.sendMessage(message, destIp, destPort);
+            udpConnection.sendMessage(message, "127.0.0.1", 8080);
         }
     }
 }
