@@ -9,8 +9,7 @@ public class UDPconnection extends Thread {
     private boolean running = false;
     private int port;
 
-    private UDPconnection() {
-    }
+    private UDPconnection() {}
 
     public static UDPconnection getInstance() {
         if (instance == null) {
@@ -22,7 +21,10 @@ public class UDPconnection extends Thread {
     public void setPort(int port) {
         this.port = port;
         try {
-            this.socket = new DatagramSocket(this.port);
+            if (this.socket == null || this.socket.isClosed()) {
+                this.socket = new DatagramSocket(this.port);
+                System.out.println("Socket created on port " + port);
+            }
         } catch (SocketException e) {
             System.err.println("Failed to create socket on port " + port + ": " + e.getMessage());
         }
@@ -41,7 +43,13 @@ public class UDPconnection extends Thread {
         byte[] buffer = new byte[1024];
 
         while (running) {
+            if (socket == null || socket.isClosed()) {
+                System.out.println("Socket is not initialized or has been closed.");
+                break;
+            }
+
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
             try {
                 System.out.println("Waiting for message on port " + port + "...");
                 socket.receive(packet);
@@ -57,7 +65,7 @@ public class UDPconnection extends Thread {
                 }
             }
         }
-        if (socket != null) {
+        if (socket != null && !socket.isClosed()) {
             socket.close();
         }
     }
@@ -73,5 +81,19 @@ public class UDPconnection extends Thread {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public String receiveMessage() {
+        byte[] buffer = new byte[1024];
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+        try {
+            socket.receive(packet);
+            String message = new String(packet.getData(), 0, packet.getLength()).trim();
+            return message;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
