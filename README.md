@@ -93,16 +93,6 @@ mvn clean javafx:run
 
 <p align="justify">Si la configuración en <code>PeerConfig.java</code> fue correcta, al iniciarse la interfaz podrás enviar y recibir mensajes con el peer configurado hacia el otro peer (por defecto hacia Peer H en puerto 5001).</p>
 
-<p align="justify"><strong>Importante:</strong> Si planeas ejecutar este programa en dos computadores diferentes, debes modificar la configuración en <code>PeerConfig.java</code> para que refleje las direcciones IP reales de cada máquina en la red. Específicamente:</p> 
-
-<ul>
-   <li><p align="justify">Para cada peer, actualiza la constante <code>IP_PEER_X</code> con la dirección IP local o pública asignada a la máquina donde se ejecuta ese peer.</p></li>
-   <li><p align="justify">Asegúrate de que los puertos configurados (<code>PORT_PEER_D</code>, <code>PORT_PEER_H</code>, etc.) estén libres y accesibles en cada computador, y que no existan firewalls bloqueando el tráfico UDP en esos puertos.</p></li>
-   <li><p align="justify">La IP y puerto que un peer utiliza para enviar mensajes deben coincidir con la IP y puerto donde el peer receptor está escuchando, asegurando la comunicación correcta entre ambos.</p></li>
-   <li><p align="justify">Si ambos computadores están en la misma red local, puedes usar las IPs privadas asignadas por el router.</p></li>
-   <li><p align="justify">Esta configuración garantiza que los peers se encuentren en la red y puedan enviar y recibir mensajes correctamente usando UDP.</p></li>
-</ul>
-
 ---
 
 ### Para pruebas en solitario (multi-consola)
@@ -120,6 +110,18 @@ mvn exec:java -Dexec.mainClass="ui.PeerH"
 ```bash
 mvn exec:java -Dexec.mainClass="ui.PeerD"
 ```
+
+---
+
+<p align="justify"><strong>Importante:</strong> Si planeas ejecutar este programa en dos computadores diferentes, debes modificar la configuración en <code>PeerConfig.java</code> para que refleje las direcciones IP reales de cada máquina en la red. Específicamente:</p> 
+
+<ul>
+   <li><p align="justify">Para cada peer, actualiza la constante <code>IP_PEER_X</code> con la dirección IP local o pública asignada a la máquina donde se ejecuta ese peer.</p></li>
+   <li><p align="justify">Asegúrate de que los puertos configurados (<code>PORT_PEER_D</code>, <code>PORT_PEER_H</code>, etc.) estén libres y accesibles en cada computador, y que no existan firewalls bloqueando el tráfico UDP en esos puertos.</p></li>
+   <li><p align="justify">La IP y puerto que un peer utiliza para enviar mensajes deben coincidir con la IP y puerto donde el peer receptor está escuchando, asegurando la comunicación correcta entre ambos.</p></li>
+   <li><p align="justify">Si ambos computadores están en la misma red local, puedes usar las IPs privadas asignadas por el router.</p></li>
+   <li><p align="justify">Esta configuración garantiza que los peers se encuentren en la red y puedan enviar y recibir mensajes correctamente usando UDP.</p></li>
+</ul>
 
 ---
 
