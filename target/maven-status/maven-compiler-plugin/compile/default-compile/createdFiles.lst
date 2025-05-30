@@ -1,4 +1,5 @@
 ui\PeerD.class
+ui\PeerConfig.class
 ui\Chat.class
 util\UDPconnection.class
 ui\PeerH.class

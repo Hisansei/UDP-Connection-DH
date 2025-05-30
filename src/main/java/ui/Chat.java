@@ -1,5 +1,7 @@
 package ui;
 
+import ui.PeerConfig;
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.UDPconnection;
@@ -16,6 +18,9 @@ import javafx.application.Application;
 
 public class Chat extends Application {
 
+    private int localPort;
+    private int remotePort;
+    private String remoteIP;
     private UDPconnection udpConnection;
     private volatile boolean running = true;
 
@@ -35,17 +40,23 @@ public class Chat extends Application {
         Button sendButton = new Button("Send Message");
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px;");
 
+        // Recordatorio para usuario: Revisar PeerConfig.java!!!!!!!!!!!!
+        localPort = PeerConfig.PORT_PEER_D; // Puerto local para escuchar
+
+        remoteIP = PeerConfig.IP_PEER_H;        // IP destino para enviar
+        remotePort = PeerConfig.PORT_PEER_H;// Puerto destino para enviar
+
         // Enviar mensaje cuando se presiona el botón...............
         sendButton.setOnAction(e -> { 
             String message = inputField.getText();
             if (!message.isEmpty()) {
-                udpConnection.sendMessage(message, "127.0.0.1", 5001);  // Ajustar según caso! Este es el destinatario!
-                chatArea.appendText("You: " + message + "\n");    // Mostrar el mensaje enviado en la interfaz
-                inputField.clear();                                               // Limpiar el campo de texto
+                udpConnection.sendMessage(message, remoteIP, remotePort);  // Ajustar según caso en PeerConfig!
+                chatArea.appendText("You: " + message + "\n");    // Mostrar el mensaje enviado en la interfaz!
+                inputField.clear();                                               // Limpiar el campo de texto!
             }
         });
 
-        // Botón para salir.........................................
+        // Botón para salir del programa de forma correcta..........
         Button exitButton = new Button("Exit");
         exitButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px;");
         
@@ -76,7 +87,7 @@ public class Chat extends Application {
 
         // Configurar la conexión UDP:
         udpConnection = UDPconnection.getInstance();
-        udpConnection.setPort(5000);  // Puerto local para escuchar; Por default es el de Peer D!
+        udpConnection.setPort(localPort);  // Puerto local para escuchar. Por default es el de Peer D!
         udpConnection.start();
 
         // Recibir mensajes en un hilo separado y actualizar el chat:
