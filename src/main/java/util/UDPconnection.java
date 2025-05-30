@@ -32,11 +32,17 @@ public class UDPconnection extends Thread {
 
     public void close() {
         running = false;
-        if (socket != null) {
+        if (socket != null && !socket.isClosed()) {
             socket.close();
         }
     }
 
+    /*
+    * Modifique el código provisto de tal forma que: el hilo de recepción no  "muera" una
+    * vez recibido el mensaje [10%]. Para cumplir este ítem modificamos el  método  run()
+    * agregando un ciclo while que mantiene el hilo activo y escuchando mensajes de forma
+    * continua hasta que se detenga explícitamente la conexión.
+    */
     @Override
     public void run() {
         running = true;
@@ -70,6 +76,13 @@ public class UDPconnection extends Thread {
         }
     }
 
+    /**
+     * Modifique el código provisto de tal forma que la lógica de transmisión
+     * de paquetes quede en un hilo aparte [10%]. Para cumplir este  ítem, el
+     * método sendMessage() crea un nuevo hilo para enviar el paquete  UDP de
+     * forma asíncrona,  evitando  bloquear el  hilo principal  o la interfaz
+     * durante el envío del mensaje.
+     */
     public void sendMessage(String msj, String ipDest, int portDest) {
         new Thread(() -> {
             try {
