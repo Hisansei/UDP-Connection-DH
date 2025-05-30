@@ -34,6 +34,7 @@
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
+        <outputDirectory>bin</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -41,6 +42,9 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>ui.Chat</mainClass>
+                    <options>
+                        <option>--add-modules=javafx.controls,javafx.fxml,javafx.graphics</option>
+                    </options>
                 </configuration>
                 <executions>
                     <execution>
